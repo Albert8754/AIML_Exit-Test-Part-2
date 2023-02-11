@@ -1,6 +1,12 @@
 import streamlit as st
 import cv2
 import numpy as np
+import keras
+from keras.preprocessing import image
+from keras.preprocessing.image import ImageDataGenerator
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Flatten
+from keras.layers import Conv2D, MaxPooling2D
 
 st.title("Video Emotion Extractor")
 
@@ -95,7 +101,53 @@ if file is not None:
             face = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
 
             # Predict emotion using deep learning model
-            model = # Your deep learning model for emotion detection
+            model = Sequential()
+	    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(img_rows, img_cols, 1)))
+	    model.add(MaxPooling2D(pool_size=(2, 2)))
+  	    model.add(Dropout(0.5))
+
+ 	    model.add(Conv2D(64, (3, 3), activation='relu'))
+	    model.add(MaxPooling2D(pool_size=(2, 2)))
+	    model.add(Dropout(0.5))
+
+	    model.add(Conv2D(128, (3, 3), activation='relu'))
+	    model.add(MaxPooling2D(pool_size=(2, 2)))
+ 	    model.add(Dropout(0.5))
+
+	    model.add(Flatten())
+  	    model.add(Dense(128, activation='relu'))
+	    model.add(Dropout(0.5))
+	    model.add(Dense(num_classes, activation='softmax'))
+	    # Compile the model
+	    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+	    # Fit the model on the training data
+	    train_datagen = ImageDataGenerator(rescale=1./255)
+	    validation_datagen = ImageDataGenerator(rescale=1./255)
+
+	    train_generator = train_datagen.flow_from_directory(
+			'train_set',
+			 target_size=(img_rows, img_cols),
+			 batch_size=batch_size,
+			 color_mode='grayscale',
+			 class_mode='categorical')
+
+	    validation_generator = validation_datagen.flow_from_directory(
+			'validation_set',
+			target_size=(img_rows, img_cols),
+			batch_size=batch_size,
+			color_mode='grayscale',
+			class_mode='categorical')
+
+	    model.fit_generator(
+		train_generator,
+			steps_per_epoch=train_generator.samples//batch_size,
+			epochs=10,
+			validation_data=validation_generator,
+			validation_steps=validation_generator.samples//batch_size)
+
+	    # Save the model
+	    model.save('emotion_detection_model.h5')
 
             # Run the face through the model to predict the emotion
             emotion = model.predict(face)
