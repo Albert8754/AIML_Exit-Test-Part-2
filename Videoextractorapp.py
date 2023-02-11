@@ -1,6 +1,5 @@
 import streamlit as st
-pip3 install opencv-python
-import cv2 
+import cv2 as cv
 import time
 video_file= st.file_uploader("Upload a video")
 
@@ -9,11 +8,11 @@ def write_file(filename  , data):
         out.write(data.getbuffer())
 
 def write_frame(frame,path, file_name):     
-    cv2.imwrite(f"{path}/{file_name}",frame)
+    cv.imwrite(f"{path}/{file_name}",frame)
 
 
 def read_video(filename): 	
-   vid_capture = cv2.VideoCapture('output/sample_video.mp4')
+   vid_capture = cv.VideoCapture('output/sample_video.mp4')
    return vid_capture
 
 def show_frame(image):
@@ -59,14 +58,14 @@ if video_file:
             # show_frame(frame)
             image_name=f"soccer_image_{i}.jpeg"
             write_frame(frame,"output/images",image_name)
-            key = cv2.waitKey(20)
+            key = cv.waitKey(20)
             if key == ord('q'):
                break
          else:
             break
       st.text("Extracting images completed")
    vid_capture.release()
-   cv2.destroyAllWindows()
+   cv.destroyAllWindows()
 
 
 
