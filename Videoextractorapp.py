@@ -1,5 +1,5 @@
 import streamlit as st
-import cv2 as cv
+import opencv-python as cv
 import time
 video_file= st.file_uploader("Upload a video")
 
