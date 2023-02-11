@@ -102,52 +102,52 @@ if file is not None:
 
             # Predict emotion using deep learning model
             model = Sequential()
-	    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(img_rows, img_cols, 1)))
-	    model.add(MaxPooling2D(pool_size=(2, 2)))
-  	    model.add(Dropout(0.5))
+            model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(img_rows, img_cols, 1)))
+            model.add(MaxPooling2D(pool_size=(2, 2)))
+            model.add(Dropout(0.5))
 
- 	    model.add(Conv2D(64, (3, 3), activation='relu'))
-	    model.add(MaxPooling2D(pool_size=(2, 2)))
-	    model.add(Dropout(0.5))
+            model.add(Conv2D(64, (3, 3), activation='relu'))
+            model.add(MaxPooling2D(pool_size=(2, 2)))
+            model.add(Dropout(0.5))
 
-	    model.add(Conv2D(128, (3, 3), activation='relu'))
-	    model.add(MaxPooling2D(pool_size=(2, 2)))
- 	    model.add(Dropout(0.5))
+            model.add(Conv2D(128, (3, 3), activation='relu'))
+            model.add(MaxPooling2D(pool_size=(2, 2)))
+            model.add(Dropout(0.5))
 
-	    model.add(Flatten())
-  	    model.add(Dense(128, activation='relu'))
-	    model.add(Dropout(0.5))
-	    model.add(Dense(num_classes, activation='softmax'))
-	    # Compile the model
-	    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            model.add(Flatten())
+            model.add(Dense(128, activation='relu'))
+            model.add(Dropout(0.5))
+            model.add(Dense(num_classes, activation='softmax'))
+            # Compile the model
+            model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-	    # Fit the model on the training data
-	    train_datagen = ImageDataGenerator(rescale=1./255)
-	    validation_datagen = ImageDataGenerator(rescale=1./255)
+            # Fit the model on the training data
+            train_datagen = ImageDataGenerator(rescale=1./255)
+            validation_datagen = ImageDataGenerator(rescale=1./255)
 
-	    train_generator = train_datagen.flow_from_directory(
-			'train_set',
-			 target_size=(img_rows, img_cols),
-			 batch_size=batch_size,
-			 color_mode='grayscale',
-			 class_mode='categorical')
+            train_generator = train_datagen.flow_from_directory(
+                'train_set',
+                target_size=(img_rows, img_cols),
+                batch_size=batch_size,
+                color_mode='grayscale',
+                class_mode='categorical')
 
-	    validation_generator = validation_datagen.flow_from_directory(
-			'validation_set',
-			target_size=(img_rows, img_cols),
-			batch_size=batch_size,
-			color_mode='grayscale',
-			class_mode='categorical')
+            validation_generator = validation_datagen.flow_from_directory(
+                'validation_set',
+                target_size=(img_rows, img_cols),
+                batch_size=batch_size,
+                color_mode='grayscale',
+                class_mode='categorical')
 
-	    model.fit_generator(
-		train_generator,
-			steps_per_epoch=train_generator.samples//batch_size,
-			epochs=10,
-			validation_data=validation_generator,
-			validation_steps=validation_generator.samples//batch_size)
+            model.fit_generator(
+            train_generator,
+                steps_per_epoch=train_generator.samples//batch_size,
+                epochs=10,
+                validation_data=validation_generator,
+                validation_steps=validation_generator.samples//batch_size)
 
-	    # Save the model
-	    model.save('emotion_detection_model.h5')
+            # Save the model
+            model.save('emotion_detection_model.h5')
 
             # Run the face through the model to predict the emotion
             emotion = model.predict(face)
@@ -167,20 +167,20 @@ if file is not None:
             if emotion_label == "loss":
                 loss_moments.append(frame)
 
-    # Release video file
-    video.release()
+# Release video file
+video.release()
 
-    # Show goal moments
-    st.write("Goal moments:")
-    for frame in goal_moments:
-        st.image(frame)
+# Show goal moments
+st.write("Goal moments:")
+for frame in goal_moments:
+    st.image(frame)
 
-    # Show happy moments
-    st.write("Happy moments:")
-    for frame in happy_mo
-        st.image(frame)
+# Show happy moments
+st.write("Happy moments:")
+for frame in happy_mo
+    st.image(frame)
 
-    # Show loss moments
-    st.write("Loss moments:")
-    for frame in loss_momments:
-	st.image(frame)
+# Show loss moments
+st.write("Loss moments:")
+for frame in loss_momments:
+    st.image(frame)
