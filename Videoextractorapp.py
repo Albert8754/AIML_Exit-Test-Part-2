@@ -153,7 +153,8 @@ if file is not None:
             emotion = model.predict(face)
 
             # Get the emotion label
-            emotion_label = # Your function to get the emotion label from the prediction
+            def emotion_label(prediction):
+                return emotion
 
             # If emotion is goal, add frame to goal moments
             if emotion_label == "goal":
