@@ -1,5 +1,5 @@
-import streamlit as st
 pip install -r requirements.txt
+import streamlit as st
 import cv2 
 import time
 video_file= st.file_uploader("Upload a video")
