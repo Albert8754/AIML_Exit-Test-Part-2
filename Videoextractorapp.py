@@ -178,10 +178,10 @@ for frame in goal_moments:
 
 # Show happy moments
 st.write("Happy moments:")
-for frame in happy_mo
+for frame in happy_moments:
     st.image(frame)
 
 # Show loss moments
 st.write("Loss moments:")
-for frame in loss_momments:
+for frame in loss_moments:
     st.image(frame)
